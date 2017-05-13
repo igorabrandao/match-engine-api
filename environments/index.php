@@ -29,8 +29,8 @@
  * ```
  */
 return [
-    'Development' => [
-        'path' => 'dev',
+    'Lost-Found' => [
+        'path' => 'lost-found',
         'setWritable' => [
             'api/runtime',
             'api/web/assets',
@@ -44,8 +44,22 @@ return [
             'api/config/main-local.php',
         ],
     ],
-    'Production' => [
-        'path' => 'prod',
+    'Match-Buddy' => [
+        'path' => 'match-buddy',
+        'setWritable' => [
+            'api/runtime',
+            'api/web/assets',
+            'api/web/upload',
+        ],
+        'setExecutable' => [
+            'yii',
+        ],
+        'setCookieValidationKey' => [
+            'api/config/main-local.php',
+        ],
+    ],
+    'Match-Jobs' => [
+        'path' => 'match-jobs',
         'setWritable' => [
             'api/runtime',
             'api/web/assets',
