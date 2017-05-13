@@ -29,6 +29,21 @@
  * ```
  */
 return [
+    'Development' => [
+        'path' => 'dev',
+        'setWritable' => [
+            'api/runtime',
+            'api/web/assets',
+            'api/web/upload',
+        ],
+        'setExecutable' => [
+            'yii',
+            'yii_test',
+        ],
+        'setCookieValidationKey' => [
+            'api/config/main-local.php',
+        ],
+    ],
     'Lost-Found' => [
         'path' => 'lost-found',
         'setWritable' => [
