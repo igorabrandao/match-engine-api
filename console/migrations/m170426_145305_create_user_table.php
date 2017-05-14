@@ -19,14 +19,15 @@ class m170426_145305_create_user_table extends Migration
             'is_admin' => $this->boolean()->notNull(),
             'is_active' => $this->boolean()->notNull(),
             'name' => $this->string(255)->notNull(),
+            'surname' => $this->string(255)->notNull(),
             'email' => $this->string(255)->notNull()->unique(),
-            'phone' => $this->string(255)->notNull(),
+            'phone' => $this->string(255),
             'access_token' => $this->string(255),
             'password_reset_token' => $this->string(255),
             'encrypted_password' => $this->string(255)->notNull(),
             'expiration_date_reset_token' => $this->timestamp(),
-            'updated_at' => $this->timestamp(),
             'created_at' => $this->timestamp(),
+            'updated_at' => $this->timestamp(),
         ], $tableOptions);
     }
 

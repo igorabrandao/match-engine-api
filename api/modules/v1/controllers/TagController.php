@@ -12,6 +12,7 @@ use yii\filters\auth\HttpBearerAuth;
 class TagController extends \yii\rest\ActiveController
 {
     public $modelClass = 'api\modules\v1\models\Tag';
+
     /**
      * @inheritdoc
      */

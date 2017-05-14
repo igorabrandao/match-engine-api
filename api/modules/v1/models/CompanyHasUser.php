@@ -11,8 +11,8 @@ use Yii;
  * @property integer $company_id
  * @property integer $user_id
  *
- * @property User $user
  * @property Company $company
+ * @property User $user
  */
 class CompanyHasUser extends \yii\db\ActiveRecord
 {
@@ -21,7 +21,7 @@ class CompanyHasUser extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%company_has_user}}';
+        return 'company_has_user';
     }
 
     /**
@@ -31,8 +31,8 @@ class CompanyHasUser extends \yii\db\ActiveRecord
     {
         return [
             [['company_id', 'user_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['company_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -51,16 +51,16 @@ class CompanyHasUser extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getCompany()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCompany()
+    public function getUser()
     {
-        return $this->hasOne(Company::className(), ['id' => 'company_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

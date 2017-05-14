@@ -44,8 +44,37 @@ return [
             'api/config/main-local.php',
         ],
     ],
-    'Production' => [
-        'path' => 'prod',
+    'Lost-Found' => [
+        'path' => 'lost-found',
+        'setWritable' => [
+            'api/runtime',
+            'api/web/assets',
+            'api/web/upload',
+        ],
+        'setExecutable' => [
+            'yii',
+            'yii_test',
+        ],
+        'setCookieValidationKey' => [
+            'api/config/main-local.php',
+        ],
+    ],
+    'Match-Buddy' => [
+        'path' => 'match-buddy',
+        'setWritable' => [
+            'api/runtime',
+            'api/web/assets',
+            'api/web/upload',
+        ],
+        'setExecutable' => [
+            'yii',
+        ],
+        'setCookieValidationKey' => [
+            'api/config/main-local.php',
+        ],
+    ],
+    'Match-Jobs' => [
+        'path' => 'match-jobs',
         'setWritable' => [
             'api/runtime',
             'api/web/assets',

@@ -9,11 +9,9 @@ use Yii;
  *
  * @property integer $id
  * @property string $description
- * @property integer $tag_type_id
  *
- * @property CompanyHasTag[] $companyHasTags
- * @property ProfessionalHasTag[] $professionalHasTags
- * @property TagType $tagType
+ * @property JobHasTag[] $jobHasTags
+ * @property ResumeHasTag[] $resumeHasTags
  */
 class Tag extends \yii\db\ActiveRecord
 {
@@ -32,9 +30,7 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             [['description'], 'required'],
-            [['tag_type_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['tag_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => TagType::className(), 'targetAttribute' => ['tag_type_id' => 'id']],
         ];
     }
 
@@ -46,50 +42,22 @@ class Tag extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'description' => 'Description',
-            'tag_type_id' => 'Tag Type ID',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function fields()
-    {
-        $fields = parent::fields();
-        return $fields;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function extraFields()
-    {
-        return [
-            'tagType'
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCompanyHasTags()
+    public function getJobHasTags()
     {
-        return $this->hasMany(CompanyHasTag::className(), ['tag_id' => 'id']);
+        return $this->hasMany(JobHasTag::className(), ['tag_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfessionalHasTags()
+    public function getResumeHasTags()
     {
-        return $this->hasMany(ProfessionalHasTag::className(), ['tag_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTagType()
-    {
-        return $this->hasOne(TagType::className(), ['id' => 'tag_type_id']);
+        return $this->hasMany(ResumeHasTag::className(), ['tag_id' => 'id']);
     }
 }
