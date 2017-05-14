@@ -2,8 +2,8 @@
 
 namespace api\modules\v1\controllers;
 
-use Yii;
 use api\modules\v1\models\User;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;

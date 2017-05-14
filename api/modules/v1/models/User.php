@@ -8,24 +8,27 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "{{%user}}".
+ * This is the model class for table "user".
  *
  * @property integer $id
  * @property integer $is_admin
  * @property integer $is_active
  * @property string $name
+ * @property string $surname
  * @property string $email
  * @property string $phone
  * @property string $access_token
  * @property string $password_reset_token
  * @property string $encrypted_password
  * @property string $expiration_date_reset_token
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  *
  * @property CompanyHasUser[] $companyHasUsers
+ * @property JobAlert[] $jobAlerts
+ * @property JobApplication[] $jobApplications
  * @property Mobile[] $mobiles
- * @property ProfessionalHasUser[] $professionalHasUsers
+ * @property Resume[] $resumes
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -88,14 +91,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['is_admin', 'is_active', 'name', 'email', 'phone', 'encrypted_password'], 'required'],
+            [['is_admin', 'is_active', 'name', 'surname', 'email', 'encrypted_password'], 'required'],
             [['is_admin', 'is_active'], 'integer'],
-            [['expiration_date_reset_token', 'updated_at', 'created_at'], 'safe'],
-            [['name', 'email', 'phone', 'access_token', 'password_reset_token', 'encrypted_password'], 'string', 'max' => 255],
+            [['expiration_date_reset_token', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'surname', 'email', 'phone', 'access_token', 'password_reset_token', 'encrypted_password'], 'string', 'max' => 255],
             [['email'], 'unique'],
-            [['email'], 'email'],
-            [['email'], 'filter', 'filter' => 'strtolower'],
-            [['password_reset_token'], 'unique'],
         ];
     }
 
@@ -117,9 +117,6 @@ class User extends ActiveRecord implements IdentityInterface
         // If the user is associated to a company, it`ll return the company ID
         $fields['company'] = 'company';
 
-        // If the user is associated to a professional, it`ll return the professional ID
-        $fields['professional'] = 'professional';
-
         return $fields;
     }
 
@@ -133,23 +130,26 @@ class User extends ActiveRecord implements IdentityInterface
             'is_admin' => 'Is Admin',
             'is_active' => 'Is Active',
             'name' => 'Name',
+            'surname' => 'Surname',
             'email' => 'Email',
             'phone' => 'Phone',
             'access_token' => 'Access Token',
             'password_reset_token' => 'Password Reset Token',
             'encrypted_password' => 'Encrypted Password',
             'expiration_date_reset_token' => 'Expiration Date Reset Token',
-            'updated_at' => 'Updated At',
             'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @inheritdoc
      */
-    public function getMobiles()
+    public function extraFields()
     {
-        return $this->hasMany(Mobile::className(), ['user_id' => 'id']);
+        return [
+            'company'
+        ];
     }
 
     /**
@@ -171,17 +171,33 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfessionalHasUsers()
+    public function getJobAlerts()
     {
-        return $this->hasMany(ProfessionalHasUser::className(), ['user_id' => 'id']);
+        return $this->hasMany(JobAlert::className(), ['user_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfessional()
+    public function getJobApplications()
     {
-        return $this->hasMany(Professional::className(), ['id' => 'professional_id'])->via('professionalHasUsers')->one();
+        return $this->hasMany(JobApplication::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMobiles()
+    {
+        return $this->hasMany(Mobile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResumes()
+    {
+        return $this->hasMany(Resume::className(), ['user_id' => 'id']);
     }
 
     public function behaviors()

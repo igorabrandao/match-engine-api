@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\v1\controllers;
+namespace api\modules\v1\controllers;
 
 use api\modules\v1\models\JobHasCategory;
 use yii\data\ActiveDataProvider;

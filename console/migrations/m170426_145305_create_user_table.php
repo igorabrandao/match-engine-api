@@ -21,7 +21,7 @@ class m170426_145305_create_user_table extends Migration
             'name' => $this->string(255)->notNull(),
             'surname' => $this->string(255)->notNull(),
             'email' => $this->string(255)->notNull()->unique(),
-            'phone' => $this->string(255)->notNull(),
+            'phone' => $this->string(255),
             'access_token' => $this->string(255),
             'password_reset_token' => $this->string(255),
             'encrypted_password' => $this->string(255)->notNull(),

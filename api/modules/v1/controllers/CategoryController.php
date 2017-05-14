@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\v1\controllers;
+namespace api\modules\v1\controllers;
 
 use api\modules\v1\models\Category;
 use yii\data\ActiveDataProvider;

@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-api',
-    'name' => 'Personal Aqui',
+    'name' => 'Match Jobs',
     'language' => 'pt-BR',
     'timeZone' => 'America/Recife',
     'basePath' => dirname(__DIR__),
@@ -59,13 +59,12 @@ return [
                         'GET states' => 'states',
                         'GET cities-from-state/<id:\d+>' => 'cities-from-state',
                         'GET companies' => 'companies',
-                        'GET company-markets' => 'company-markets',
                         'GET tag' => 'tags',
-                        'GET tag-types' => 'tag-types',
-                        'GET professional' => 'professionals',
-                        'GET professional-types' => 'professional-types',
-                        'GET age-groups' => 'age-groups',
-                        'GET price-ranges' => 'price-ranges',
+                        'GET resume' => 'resumes',
+                        'GET job' => 'jobs',
+                        'GET job-alert' => 'jobs-alert',
+                        'GET job-application' => 'jobs-application',
+                        'GET contac' => 'contacts',
                     ]
                 ],
                 [
@@ -108,14 +107,12 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'v1/company',
-                        'v1/company-market',
-                        'v1/company-status',
+                        'v1/job',
+                        'v1/job-alert',
+                        'v1/job-application',
                         'v1/tag',
-                        'v1/tag-type',
-                        'v1/professional',
-                        'v1/professional-type',
-                        'v1/age-group',
-                        'v1/price-range',
+                        'v1/resume',
+                        'v1/contact',
                     ]
                 ],
             ],
