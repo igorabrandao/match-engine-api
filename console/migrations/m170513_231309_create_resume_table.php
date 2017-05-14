@@ -19,7 +19,7 @@ class m170513_231309_create_resume_table extends Migration
         $this->createTable('resume', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer(),
-            'professiona_title' => $this->string(255)->notNull(),
+            'professional_title' => $this->string(255)->notNull(),
             'resume' => $this->text()->notNull(),
             'education' => $this->text(),
             'work_experience' => $this->text(),
@@ -28,7 +28,7 @@ class m170513_231309_create_resume_table extends Migration
             'photo_id' => $this->string(13),
             'video' => $this->string(255),
             'cep' => $this->string(16),
-            'street' => $this->string(255)->notNull(),
+            'street' => $this->string(255),
             'district' => $this->string(255),
             'address_number' => $this->string(64),
             'logo_id' => $this->string(13),
