@@ -71,6 +71,16 @@ class Job extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function extraFields()
+    {
+        return [
+            'company'
+        ];
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCity()
@@ -108,5 +118,21 @@ class Job extends \yii\db\ActiveRecord
     public function getJobHasTags()
     {
         return $this->hasMany(JobHasTag::className(), ['job_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCompanyHasJobs()
+    {
+        return $this->hasMany(CompanyHasJob::className(), ['job_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCompany()
+    {
+        return $this->hasMany(Company::className(), ['id' => 'company_id'])->via('companyHasJobs')->one();
     }
 }
