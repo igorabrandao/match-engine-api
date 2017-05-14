@@ -2,15 +2,15 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\models\Category;
 use api\modules\v1\models\State;
 use api\modules\v1\models\Company;
-use api\modules\v1\models\CompanyMarket;
+use api\modules\v1\models\Job;
+use api\modules\v1\models\JobAlert;
+use api\modules\v1\models\JobApplication;
+use api\modules\v1\models\JobType;
 use api\modules\v1\models\Tag;
-use api\modules\v1\models\TagType;
-use api\modules\v1\models\ProfessionalType;
-use api\modules\v1\models\AgeGroup;
-use api\modules\v1\models\PriceRange;
-use api\modules\v1\models\User;
+use api\modules\v1\models\Resume;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
@@ -60,6 +60,13 @@ class ListAllController extends ActiveController
         );
     }
 
+    public function actionCategories()
+    {
+        return static::query(
+            Category::find()->orderBy(['description' => 'asc'])
+        );
+    }
+
     public function actionCompanies()
     {
         return static::query(
@@ -67,52 +74,45 @@ class ListAllController extends ActiveController
         );
     }
 
-    public function actionCompanyMarkets()
+    public function actionJobs()
     {
         return static::query(
-            CompanyMarket::find()->orderBy(['description' => 'asc'])
+            Job::find()->orderBy(['created_at' => 'desc'])
         );
     }
 
-    public function actionTag()
+    public function actionJobTypes()
+    {
+        return static::query(
+            JobType::find()->orderBy(['description' => 'asc'])
+        );
+    }
+
+    public function actionJobApplications()
+    {
+        return static::query(
+            JobApplication::find()->orderBy(['created_at' => 'asc'])
+        );
+    }
+
+    public function actionJobAlerts()
+    {
+        return static::query(
+            JobAlert::find()->orderBy(['title' => 'asc'])
+        );
+    }
+
+    public function actionTags()
     {
         return static::query(
             Tag::find()->orderBy(['name' => 'asc'])
         );
     }
 
-    public function actionTagTypes()
+    public function actionResumes()
     {
         return static::query(
-            TagType::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    public function actionProfessional()
-    {
-        return static::query(
-            User::find()->orderBy(['name' => 'asc'])
-        );
-    }
-
-    public function actionProfessionalTypes()
-    {
-        return static::query(
-            ProfessionalType::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    public function actionAgeGroups()
-    {
-        return static::query(
-            AgeGroup::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    public function actionPriceRanges()
-    {
-        return static::query(
-            PriceRange::find()->orderBy(['min_price' => 'asc'])
+            Resume::find()->orderBy(['professional_title' => 'asc'])
         );
     }
 }
