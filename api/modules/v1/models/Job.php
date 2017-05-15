@@ -76,7 +76,12 @@ class Job extends \yii\db\ActiveRecord
     public function extraFields()
     {
         return [
-            'company'
+            'city' => 'city',
+            'state' => function () {
+                return $this->city->state;
+            },
+            'company',
+            'jobType'
         ];
     }
 

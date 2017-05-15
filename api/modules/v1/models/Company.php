@@ -89,6 +89,21 @@ class Company extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function extraFields()
+    {
+        return [
+            'city' => 'city',
+            'state' => function () {
+                return $this->city->state;
+            },
+            'logo',
+            'users'
+        ];
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCity()
@@ -101,7 +116,7 @@ class Company extends \yii\db\ActiveRecord
      */
     public function getLogo()
     {
-        return $this->hasOne(Logo::className(), ['id' => 'logo_id']);
+        return $this->hasOne(Upload::className(), ['id' => 'logo_id']);
     }
 
     /**
