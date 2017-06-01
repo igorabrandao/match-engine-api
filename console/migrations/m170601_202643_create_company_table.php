@@ -4,12 +4,8 @@ use yii\db\Migration;
 
 /**
  * Handles the creation of table `company`.
- * Has foreign keys to the tables:
- *
- * - `logo`
- * - `company_market`
  */
-class m180426_164451_create_company_table extends Migration
+class m170601_202643_create_company_table extends Migration
 {
     /**
      * @inheritdoc
@@ -28,7 +24,7 @@ class m180426_164451_create_company_table extends Migration
             'street' => $this->string(255)->notNull(),
             'district' => $this->string(255),
             'address_number' => $this->string(64),
-            'logo_id' => $this->string(13),
+            'upload_id' => $this->string(13),
             'city_id' => $this->integer(),
             'facebook' => $this->string(255),
             'twitter' => $this->string(255),
@@ -40,19 +36,19 @@ class m180426_164451_create_company_table extends Migration
             'updated_at' => $this->timestamp(),
         ], $tableOptions);
 
-        // creates index for column `logo`
+        // creates index for column `upload`
         $this->createIndex(
-            'idx-company-logo_id',
+            'idx-company-upload_id',
             'company',
-            'logo_id'
+            'upload_id'
         );
 
-        // add foreign key for table `logo`
+        // add foreign key for table `upload`
         $this->addForeignKey(
-            'fk-company-logo_id',
+            'fk-company-upload_id',
             'company',
-            'logo_id',
-            'logo',
+            'upload_id',
+            'upload',
             'id',
             'RESTRICT'
         );
@@ -80,15 +76,15 @@ class m180426_164451_create_company_table extends Migration
      */
     public function down()
     {
-        // drops foreign key for table `logo`
+        // drops foreign key for table `upload`
         $this->dropForeignKey(
-            'fk-company-logo_id',
+            'fk-company-upload_id',
             'company'
         );
 
-        // drops index for column `logo`
+        // drops index for column `upload`
         $this->dropIndex(
-            'idx-company-logo_id',
+            'idx-company-upload_id',
             'company'
         );
 

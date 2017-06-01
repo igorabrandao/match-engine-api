@@ -7,7 +7,7 @@ use yii\db\Migration;
  * Has foreign keys to the tables:
  *
  * - `user`
- * - `logo`
+ * - `upload`
  */
 class m170513_231309_create_resume_table extends Migration
 {
@@ -31,7 +31,7 @@ class m170513_231309_create_resume_table extends Migration
             'street' => $this->string(255),
             'district' => $this->string(255),
             'address_number' => $this->string(64),
-            'logo_id' => $this->string(13),
+            'upload_id' => $this->string(13),
             'city_id' => $this->integer(),
             'facebook' => $this->string(255),
             'twitter' => $this->string(255),
@@ -65,12 +65,12 @@ class m170513_231309_create_resume_table extends Migration
             'photo_id'
         );
 
-        // add foreign key for table `logo`
+        // add foreign key for table `upload`
         $this->addForeignKey(
             'fk-resume-photo_id',
             'resume',
             'photo_id',
-            'logo',
+            'upload',
             'id',
             'CASCADE'
         );
@@ -93,7 +93,7 @@ class m170513_231309_create_resume_table extends Migration
             'resume'
         );
 
-        // drops foreign key for table `logo`
+        // drops foreign key for table `upload`
         $this->dropForeignKey(
             'fk-resume-photo_id',
             'resume'
