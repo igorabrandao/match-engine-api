@@ -4,12 +4,8 @@ use yii\db\Migration;
 
 /**
  * Handles the creation of table `company_has_user`.
- * Has foreign keys to the tables:
- *
- * - `company`
- * - `user`
  */
-class m180426_195841_create_company_has_user_table extends Migration
+class m170601_202732_create_company_has_user_table extends Migration
 {
     /**
      * @inheritdoc
