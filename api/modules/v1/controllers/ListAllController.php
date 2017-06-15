@@ -2,11 +2,13 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\models\Category;
 use api\modules\v1\models\Company;
 use api\modules\v1\models\Contact;
 use api\modules\v1\models\Job;
 use api\modules\v1\models\JobAlert;
 use api\modules\v1\models\JobApplication;
+use api\modules\v1\models\JobType;
 use api\modules\v1\models\Resume;
 use api\modules\v1\models\State;
 use api\modules\v1\models\Tag;
@@ -74,6 +76,16 @@ class ListAllController extends ActiveController
     /**
      * @return ActiveDataProvider
      */
+    public function actionCategories()
+    {
+        return static::query(
+            Category::find()->orderBy(['description' => 'asc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
     public function actionCompanies()
     {
         return static::query(
@@ -84,20 +96,10 @@ class ListAllController extends ActiveController
     /**
      * @return ActiveDataProvider
      */
-    public function actionTags()
+    public function actionContacts()
     {
         return static::query(
-            Tag::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    /**
-     * @return ActiveDataProvider
-     */
-    public function actionResumes()
-    {
-        return static::query(
-            Resume::find()->orderBy(['professional_title' => 'asc'])
+            Contact::find()->orderBy(['created_at' => 'desc'])
         );
     }
 
@@ -134,10 +136,30 @@ class ListAllController extends ActiveController
     /**
      * @return ActiveDataProvider
      */
-    public function actionContacts()
+    public function actionJobTypes()
     {
         return static::query(
-            Contact::find()->orderBy(['created_at' => 'desc'])
+            JobType::find()->orderBy(['description' => 'asc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionResumes()
+    {
+        return static::query(
+            Resume::find()->orderBy(['professional_title' => 'asc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionTags()
+    {
+        return static::query(
+            Tag::find()->orderBy(['description' => 'asc'])
         );
     }
 
