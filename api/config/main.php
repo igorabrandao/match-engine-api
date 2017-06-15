@@ -58,13 +58,14 @@ return [
                         'OPTIONS <whatever:.*>' => 'options',
                         'GET states' => 'states',
                         'GET cities-from-state/<id:\d+>' => 'cities-from-state',
-                        'GET companies' => 'companies',
+                        'GET company' => 'companies',
                         'GET tag' => 'tags',
                         'GET resume' => 'resumes',
                         'GET job' => 'jobs',
-                        'GET job-alert' => 'jobs-alert',
-                        'GET job-application' => 'jobs-application',
-                        'GET contac' => 'contacts',
+                        'GET job-alert' => 'job-alerts',
+                        'GET job-application' => 'job-applications',
+                        'GET contact' => 'contacts',
+                        'GET user' => 'users',
                     ]
                 ],
                 [

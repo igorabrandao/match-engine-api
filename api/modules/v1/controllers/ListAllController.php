@@ -2,14 +2,14 @@
 
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\models\State;
 use api\modules\v1\models\Company;
-use api\modules\v1\models\CompanyMarket;
+use api\modules\v1\models\Contact;
+use api\modules\v1\models\Job;
+use api\modules\v1\models\JobAlert;
+use api\modules\v1\models\JobApplication;
+use api\modules\v1\models\Resume;
+use api\modules\v1\models\State;
 use api\modules\v1\models\Tag;
-use api\modules\v1\models\TagType;
-use api\modules\v1\models\ProfessionalType;
-use api\modules\v1\models\AgeGroup;
-use api\modules\v1\models\PriceRange;
 use api\modules\v1\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
@@ -23,7 +23,7 @@ class ListAllController extends ActiveController
     public $modelClass = '';
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function behaviors()
     {
@@ -38,6 +38,10 @@ class ListAllController extends ActiveController
         return $behaviors;
     }
 
+    /**
+     * @param $query
+     * @return ActiveDataProvider
+     */
     private static function query($query)
     {
         return new ActiveDataProvider([
@@ -46,6 +50,9 @@ class ListAllController extends ActiveController
         ]);
     }
 
+    /**
+     * @return ActiveDataProvider
+     */
     public function actionStates()
     {
         return static::query(
@@ -53,6 +60,10 @@ class ListAllController extends ActiveController
         );
     }
 
+    /**
+     * @param $id
+     * @return ActiveDataProvider
+     */
     public function actionCitiesFromState($id)
     {
         return static::query(
@@ -60,6 +71,9 @@ class ListAllController extends ActiveController
         );
     }
 
+    /**
+     * @return ActiveDataProvider
+     */
     public function actionCompanies()
     {
         return static::query(
@@ -67,52 +81,73 @@ class ListAllController extends ActiveController
         );
     }
 
-    public function actionCompanyMarkets()
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionTags()
     {
         return static::query(
-            CompanyMarket::find()->orderBy(['description' => 'asc'])
+            Tag::find()->orderBy(['description' => 'asc'])
         );
     }
 
-    public function actionTag()
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionResumes()
     {
         return static::query(
-            Tag::find()->orderBy(['name' => 'asc'])
+            Resume::find()->orderBy(['professional_title' => 'asc'])
         );
     }
 
-    public function actionTagTypes()
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionJobs()
     {
         return static::query(
-            TagType::find()->orderBy(['description' => 'asc'])
+            Job::find()->orderBy(['created_at' => 'desc'])
         );
     }
 
-    public function actionProfessional()
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionJobAlerts()
+    {
+        return static::query(
+            JobAlert::find()->orderBy(['description' => 'asc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionJobApplications()
+    {
+        return static::query(
+            JobApplication::find()->orderBy(['created_at' => 'desc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionContacts()
+    {
+        return static::query(
+            Contact::find()->orderBy(['created_at' => 'desc'])
+        );
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function actionUsers()
     {
         return static::query(
             User::find()->orderBy(['name' => 'asc'])
-        );
-    }
-
-    public function actionProfessionalTypes()
-    {
-        return static::query(
-            ProfessionalType::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    public function actionAgeGroups()
-    {
-        return static::query(
-            AgeGroup::find()->orderBy(['description' => 'asc'])
-        );
-    }
-
-    public function actionPriceRanges()
-    {
-        return static::query(
-            PriceRange::find()->orderBy(['min_price' => 'asc'])
         );
     }
 }
