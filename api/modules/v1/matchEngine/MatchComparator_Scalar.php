@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\v1\models;
+namespace api\modules\v1\matchEngine;
 
 /**
  * MatchComparatorScalar - match comparator scalar concrete class
@@ -17,9 +17,9 @@ class MatchComparatorScalar implements MatchComparator
      * @param attrA => attribute 1
      * @param attrB => attribute 2
      * 
-     * return float
+     * @return float
      */
-    public function compareAttribute($attrA, $attrB)
+    public static function compareAttribute($attrA, $attrB)
     {
         // Calculates the distance between the attributes
         $difference = abs($attrA - $attrB);

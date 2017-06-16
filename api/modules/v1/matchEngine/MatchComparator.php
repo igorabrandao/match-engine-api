@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\v1\models;
+namespace api\modules\v1\matchEngine;
 
 /**
  * MatchComparator - methods match definition
@@ -10,7 +10,7 @@ namespace api\modules\v1\models;
  */
 interface MatchComparator
 {
-    /*!
+    /**
      * Compares two attributes
      * Returns a float between 0 and 1 representing the % of similarity
      * 
@@ -18,9 +18,6 @@ interface MatchComparator
      * @param attrB => attribute 2
      *
      * return float (between 0 and 1)
-     *
-     * @since 0.1
-     * @access public
     */
-    public function compareAttribute($attrA, $attrB);
+    public static function compareAttribute($attrA, $attrB);
 }

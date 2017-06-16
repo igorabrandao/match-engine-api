@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\v1\models;
+namespace api\modules\v1\matchEngine;
 
 /**
  * MatchComparatorDiscrete - match comparator discrete concrete class
@@ -17,15 +17,16 @@ class MatchComparatorDiscrete implements MatchComparator
      * @param attrA => attribute 1
      * @param attrB => attribute 2
      * 
-     * return int
+     * @return int
      */
-    public function compareAttribute($attrA, $attrB)
+    public static function compareAttribute($attrA, $attrB)
     {
         // Perform a direct comparation
-        if ($attrA == $attrB)
-        {
+        if ($attrA == $attrB) {
             return 1;
         }
-        else return 0;
+        else {
+            return 0;
+        }
     }
 }

@@ -30,7 +30,7 @@ class MatchEngine
 		 */
 		public acceptMatch($itemList, $user)
 		{
-			// Will call function from DecisionMaker interface
+			// Will call function from DecisionMaker.php interface
 		}
 
 }

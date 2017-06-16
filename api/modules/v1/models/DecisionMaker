@@ -1,9 +1,0 @@
-<?php
-
-namespace api\modules\v1\models;
-
-interface DecisionMaker
-    {
-        public function acceptMatch();
-        public function rejectMatch();
-    }

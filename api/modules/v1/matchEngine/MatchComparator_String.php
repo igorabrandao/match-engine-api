@@ -1,6 +1,8 @@
 <?php
 
-namespace api\modules\v1\models;
+namespace api\modules\v1\matchEngine;
+
+use api\helpers\StringHelper;
 
 /**
  * MatchComparatorDiscrete - match comparator string concrete class
@@ -17,11 +19,11 @@ class MatchComparatorString implements MatchComparator
      * @param attrA => attribute 1
      * @param attrB => attribute 2
      * 
-     * return float
+     * @return float
      */
-    public function compareAttribute($attrA, $attrB)
+    public static function compareAttribute($attrA, $attrB)
     {
         // Calculares the similarity between string an return the result in %
-        return string_compare($attrA, $attrB);
+        return StringHelper::string_compare($attrA, $attrB);
     }
 }
