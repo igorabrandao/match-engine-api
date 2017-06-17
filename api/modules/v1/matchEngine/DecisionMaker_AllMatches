@@ -1,0 +1,42 @@
+<?php
+
+namespace api\modules\v1\matchEngine;
+
+/**
+ * DecisionMaker_AllMatches - DecisionMaker when there are no limit for matches
+ *
+ * This class provides the functions implementation for decision maker with no limit of matches (1 to All)
+ */
+class DecisionMaker_AllMatches implements DecisionMaker
+{
+    /**
+     * Accepts a match
+     *
+     * With the status set to ACCEPTED, an item will no longer appear as a possible match for the item that accepted it
+     *
+     * @param $item
+     */
+    public function acceptMatch($item){
+        //setFlag($item) = ACCEPTED;
+    }
+
+    /**
+     * Rejects a match
+     *
+     * With the status set to REJECTED, an item will no longer appear as a possible match for the item that rejected it
+     *
+     * @param $item
+     */
+    public function rejectMatch($Iitem){
+        //setFlag($item) = REJECTED;
+    }
+    
+    /**
+     * Closes the item for future matches
+     *
+     * With the status set to CLOSED, an item will no longer appear as a possible match for others
+     */
+    public function close(){
+        //setFlag(SELF) = CLOSED;
+    }
+}
