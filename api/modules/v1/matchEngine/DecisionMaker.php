@@ -10,16 +10,21 @@ namespace api\modules\v1\matchEngine;
 interface DecisionMaker
 {
     /**
-     * This method define the behavior of the system should the match be accepted
-     *
-     * @return mixed
+     * Itens status
+     * By default it starts with WAITING_EVALUATION
      */
-    public function acceptMatch();
+    const STATUS_NOT_DEFINED    = -1;
+    const WAITING_EVALUATION    = 0;
+    const REJECTED              = 1;
+    const ACCEPTED              = 2;
 
     /**
-     * This method define the behavior of the system should the match be rejected
+     * This method defines the match status accordling parameter
+     *
+     * @param item => item or itemList to be matched
+     * @param status => possible matches
      *
      * @return mixed
      */
-    public function rejectMatch();
+    public function decideMatch($item, $status);
 }

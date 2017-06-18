@@ -41,7 +41,7 @@ class MatchMany implements Matcher
      *
      * @param $matchNumber_
      */
-    public function __construct ($matchNumber_)
+    public function __construct ($matchNumber_ = null)
     {
         // Check if matches number parameter was informed
         if (!is_null($matchNumber_)) {
