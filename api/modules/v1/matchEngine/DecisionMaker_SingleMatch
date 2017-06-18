@@ -1,0 +1,65 @@
+<?php
+
+namespace api\modules\v1\matchEngine;
+
+/**
+ * DecisionMaker_SingleMatch - DecisionMaker when there can only be one match per item
+ *
+ * This class provides the functions implementation for decision maker with at most 1 (one) accepted match per item (1 to 1)
+ */
+class DecisionMaker_SingleMatch implements DecisionMaker
+{
+    
+    /**
+     * Keeps the status of the item.
+     *
+     * If set to TRUE, the item will appear as a possible match for others. 
+     *
+     */
+    private $isOpen = TRUE;
+
+    /**
+     * @return boolean
+     */
+    public function getStatus ()
+    {
+        return $this->isOpen;
+    }
+    
+    /**
+     * Accepts a match
+     *
+     * With the status set to ACCEPTED, an item will no longer appear as a possible match for the item that accepted it.
+     * After acceptance, the item will be closed.
+     *
+     * @param $item
+     */
+    public function acceptMatch($item){
+        if($this->getStatus())
+        {
+            //setFlag($item) = ACCEPTED;
+            $this->close();
+        }
+        else 
+             //YOU_CANNOT_ACCEPT_MORE_MATCHES_ERROR;
+    }
+
+    /**
+     * Rejects a match
+     *
+     * With the status set to REJECTED, an item will no longer appear as a possible match for the item that rejected it
+     *
+     * @param $item
+     */
+    public function rejectMatch($item){
+        //setFlag($item) = REJECTED;
+    }
+    
+    /**
+     * Closes the item for future matches
+     *
+     * With the isOpen attribute set to FALSE, an item will no longer appear as a possible match for others
+     */
+    public function close(){
+        $this->isOpen = FALSE;
+    }
