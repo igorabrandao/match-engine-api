@@ -72,8 +72,11 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/user-per-company',
-                    'only' => ['create', 'options']
+                    'controller' => 'v1/job',
+                    'extraPatterns' => [
+                        'OPTIONS <whatever:.*>' => 'options',
+                        'GET search-job' => 'search-job'
+                    ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',

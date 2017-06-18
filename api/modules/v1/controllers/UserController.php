@@ -73,6 +73,7 @@ class UserController extends ActiveController
 
         return $user;
     }
+
     public function actionFindByEmail()
     {
         return User::findOne(['email' => Yii::$app->request->post('email')]);
