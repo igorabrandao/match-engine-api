@@ -1,17 +1,17 @@
 <?php
 
-namespace api\modules\v1\controllers;
+namespace app\modules\v1\controllers;
 
-use api\modules\v1\models\Logo;
+use api\modules\v1\models\CompanyHasJob;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 
 /**
-* Logo Controller API
+* CompanyHasJob Controller API
 */
-class LogoController extends \yii\rest\ActiveController
+class CompanyHasJobController extends \yii\rest\ActiveController
 {
-    public $modelClass = 'api\modules\v1\models\Logo';
+    public $modelClass = 'api\modules\v1\models\CompanyHasJob';
 
     /**
      * @inheritdoc
@@ -35,7 +35,7 @@ class LogoController extends \yii\rest\ActiveController
 
         $actions['index']['prepareDataProvider'] = function () {
             return new ActiveDataProvider([
-                'query' => Logo::find(),
+                'query' => CompanyHasJob::find(),
                 'pagination' => [
                     'pageSizeLimit' => [0, 50],
                 ],

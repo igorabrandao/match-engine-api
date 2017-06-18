@@ -111,6 +111,7 @@ return [
                     'controller' => [
                         'v1/company',
                         'v1/job',
+                        'v1/job-type',
                         'v1/job-alert',
                         'v1/job-application',
                         'v1/tag',
