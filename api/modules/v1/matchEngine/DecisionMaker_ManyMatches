@@ -96,6 +96,6 @@ class DecisionMaker_AllMatches implements DecisionMaker
      *
      * With the isOpen attribute set to FALSE, an item will no longer appear as a possible match for others
      */
-    private function close(){
+    public function close(){
         isOpen = FALSE;
     }
