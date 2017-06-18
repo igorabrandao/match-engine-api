@@ -7,7 +7,7 @@ namespace api\modules\v1\matchEngine;
  *
  * This class provides the functions implementation for decision maker with a fixed limit of matches (1 to N)
  */
-class DecisionMaker_AllMatches implements DecisionMaker
+class DecisionMaker_ManyMatches implements DecisionMaker
 {
 
     /**
@@ -39,15 +39,31 @@ class DecisionMaker_AllMatches implements DecisionMaker
     }
 
     /**
-     * @param int $matchNumber
+     * @param int $maxAccept
      */
     public function setmaximumMatchesAccepted ($maxAccept)
     {
         $this->maximumMatchesAccepted = $maxAccept;
     }
+    
+    /**
+     * @return int
+     */
+    public function getcurrentMatchesAccepted ()
+    {
+        return $this->currentMatchesAccepted;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function getStatus ()
+    {
+        return $this->isOpen;
+    }
 
     /**
-     * DecisionMaker_AllMatches constructor.
+     * DecisionMaker_ManyMatches constructor.
      *
      * @param $maxAccept_
      */
@@ -55,7 +71,7 @@ class DecisionMaker_AllMatches implements DecisionMaker
     {
         // Check if parameter was informed
         if (!is_null($maxAccept_)) {
-            // Set how many matches the operation'll return
+            // Set how many matches the item can accept
             $this->setmaximumMatchesAccepted($maxAcceptr_);
         }
     }
@@ -69,11 +85,11 @@ class DecisionMaker_AllMatches implements DecisionMaker
      * @param $item
      */
     public function acceptMatch($item){
-        if(isOpen)
+        if($this->getStatus())
         {
             //setFlag($item) = ACCEPTED;
             $currentMatchesAccepted++;
-            if ($currentMatchesAccepted == getmaximumMatchesAccepted())
+            if ($this->currentMatchesAccepted == $this->getmaximumMatchesAccepted())
                 close();
         }
         else 
@@ -97,5 +113,5 @@ class DecisionMaker_AllMatches implements DecisionMaker
      * With the isOpen attribute set to FALSE, an item will no longer appear as a possible match for others
      */
     public function close(){
-        isOpen = FALSE;
+        $this->isOpen = FALSE;
     }
