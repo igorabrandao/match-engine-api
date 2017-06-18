@@ -26,7 +26,8 @@ class DecisionMaker_ManyMatches implements DecisionMaker
     /**
      * Keeps the status of the item.
      *
-     * Options: TRUE and FALSE.
+     * If set to TRUE, the item will appear as a possible match for others. 
+     *
      */
     private $isOpen = TRUE;
 
