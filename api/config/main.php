@@ -60,13 +60,14 @@ return [
                         'GET cities-from-state/<id:\d+>' => 'cities-from-state',
                         'GET categories' => 'categories',
                         'GET companies' => 'companies',
-                        'GET tags' => 'tags',
-                        'GET resumes' => 'resumes',
+                        'GET contacts' => 'contacts',
                         'GET jobs' => 'jobs',
                         'GET job-alerts' => 'job-alerts',
-                        'GET job-applications' => 'jobs-applications',
+                        'GET job-applications' => 'job-applications',
                         'GET job-types' => 'job-types',
-                        'GET contacts' => 'contacts',
+                        'GET resumes' => 'resumes',
+                        'GET tags' => 'tags',
+                        'GET users' => 'users',
                     ]
                 ],
                 [
