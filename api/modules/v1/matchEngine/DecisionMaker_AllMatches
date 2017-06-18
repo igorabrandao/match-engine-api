@@ -15,9 +15,16 @@ class DecisionMaker_AllMatches implements DecisionMaker
      *
      * If set to TRUE, the item will appear as a possible match for others. 
      *
-     * Options: TRUE and FALSE.
      */
     private $isOpen = TRUE;
+    
+    /**
+     * @return boolean
+     */
+    public function getStatus ()
+    {
+        return $this->isOpen;
+    }
     
     /**
      * Accepts a match
