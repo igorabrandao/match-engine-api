@@ -35,9 +35,8 @@ class DecisionMakerAll implements DecisionMaker
 
     /**
      * DecisionMakerMany constructor.
-     * @param null $maximumMatchesAccepted_
      */
-    public function __construct ($maximumMatchesAccepted_ = null)
+    public function __construct ()
     {
         // Set the item default status
         $this->setitemStatus($this::WAITING_EVALUATION);
