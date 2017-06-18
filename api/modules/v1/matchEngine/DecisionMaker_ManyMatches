@@ -90,7 +90,7 @@ class DecisionMaker_ManyMatches implements DecisionMaker
             //setFlag($item) = ACCEPTED;
             $currentMatchesAccepted++;
             if ($this->currentMatchesAccepted == $this->getmaximumMatchesAccepted())
-                close();
+                $this->close();
         }
         else 
              //YOU_CANNOT_ACCEPT_MORE_MATCHES_ERROR;
