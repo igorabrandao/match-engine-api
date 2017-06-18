@@ -9,6 +9,16 @@ namespace api\modules\v1\matchEngine;
  */
 class DecisionMaker_AllMatches implements DecisionMaker
 {
+
+    /**
+     * Keeps the status of the item.
+     *
+     * If set to TRUE, the item will appear as a possible match for others. 
+     *
+     * Options: TRUE and FALSE.
+     */
+    private $isOpen = TRUE;
+    
     /**
      * Accepts a match
      *
@@ -34,9 +44,9 @@ class DecisionMaker_AllMatches implements DecisionMaker
     /**
      * Closes the item for future matches
      *
-     * With the status set to CLOSED, an item will no longer appear as a possible match for others
+     * With the status set to FALSE, an item will no longer appear as a possible match for others
      */
     public function close(){
-        //setFlag(SELF) = CLOSED;
+        $this->isOpen = FALSE;
     }
 }
