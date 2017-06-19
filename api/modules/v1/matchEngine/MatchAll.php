@@ -2,6 +2,8 @@
 
 namespace api\modules\v1\matchEngine;
 
+use api\helpers\StringHelper;
+
 /**
  * MatcherAll - matcher for all items more than N% compatible
  *
@@ -80,10 +82,14 @@ class MatchAll implements Matcher
             echo "<br>===============================================================<br>";
 
             // Run through the properties of each item
-            foreach ($currentItem as $listIdx => $listProperty) {
+            foreach ($currentItem as $listLabel => $listProperty) {
 
                 // Run through the properties of each item
-                foreach ($item as $itemIdx => $itemProperty) {
+                foreach ($item as $itemLabel => $itemProperty) {
+
+                    // Defines the atribbute similarity
+                    $attributeWeight = 0;
+
                     // If the value is a numeric string, converts to a numeric variable
                     if (is_numeric($itemProperty)) {
                         $itemProperty = $itemProperty + 0;
@@ -106,7 +112,12 @@ class MatchAll implements Matcher
                          * Compares each item attribute
                          * Compatibility receives the sum of attribute similarity
                          */
-                        $currentCompatibility += MatchComparatorString::compareAttribute($itemProperty, $listProperty);
+
+                        // Returns a value between 0 and 1 representing the attribute weight
+                        $attributeWeight = StringHelper::string_compare($itemLabel, $listLabel);
+
+                        // Receive the attribute similarity and multiply by its weight
+                        $currentCompatibility += (MatchComparatorString::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
                     } else if (is_int($itemProperty)) {
                         /**
                          * Integer comparation
