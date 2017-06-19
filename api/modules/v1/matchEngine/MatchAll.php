@@ -74,17 +74,32 @@ class MatchAll implements Matcher
         // Run through array items
         foreach ($itemList as $key => $currentItem) {
 
+            // Reset the current item compatibility
+            $currentCompatibility = 0;
+
+            echo "<br>===============================================================<br>";
+
             // Run through the properties of each item
             foreach ($currentItem as $listIdx => $listProperty) {
 
-                // Reset the current item compatibility
-                $currentCompatibility = 0;
-
                 // Run through the properties of each item
                 foreach ($item as $itemIdx => $itemProperty) {
+                    // If the value is a numeric string, converts to a numeric variable
+                    if (is_numeric($itemProperty)) {
+                        $itemProperty = $itemProperty + 0;
+                    }
+
+                    if (is_numeric($listProperty)) {
+                        $listProperty = $listProperty + 0;
+                    }
+
                     /**
                      * First of all: find out the item type to perform the correct match operation
                      */
+
+                    echo gettype($itemProperty) . ": " .
+                        $itemProperty . ' --> ' . $listProperty . '<br>';
+
                     if (is_string($itemProperty)) {
                         /**
                          * String comparation

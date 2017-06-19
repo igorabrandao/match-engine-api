@@ -82,7 +82,7 @@ class JobController extends ActiveController
                 ->all();
 
         /**
-         * Here it's necessary to implement wich match strategy
+         * Here it's necessary to implement which match strategy
          * will be used
          *
          * For now I'll be using MatchAll
