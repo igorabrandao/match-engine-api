@@ -87,7 +87,7 @@ class JobController extends ActiveController
          *
          * For now I'll be using MatchAll
          */
-        $matchInstance = new MatchAll(0.2);
+        $matchInstance = new MatchAll();
 
         // If the resume was found keep going
         if (!is_null($resume)) {
