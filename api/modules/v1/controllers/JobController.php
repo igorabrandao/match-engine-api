@@ -2,14 +2,13 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\matchEngine\MatcherAll;
 use api\modules\v1\models\Job;
 use api\modules\v1\models\Resume;
-use Yii;
-use yii\db\Expression;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
-
 
 /**
 * Job Controller API
@@ -34,6 +33,9 @@ class JobController extends ActiveController
         return $behaviors;
     }
 
+    /**
+     * @return array
+     */
     public function actions()
     {
         $actions = parent::actions();
@@ -50,6 +52,10 @@ class JobController extends ActiveController
         return $actions;
     }
 
+    /**
+     * @param $query
+     * @return ActiveDataProvider
+     */
     private static function query($query)
     {
         return new ActiveDataProvider([
@@ -58,25 +64,34 @@ class JobController extends ActiveController
         ]);
     }
 
-
+    /**
+     * @return array|null|ActiveDataProvider|\yii\db\ActiveRecord
+     */
     public function actionSearchJob()
     {
         // First of all: retrieve the user resume
         $resume = Resume::find()->where(['user_id' => \Yii::$app->user->id])->one();
 
+        // Retrieve the active job list filtered by expired date
+        $jobList = static::query(
+            Job::find()
+                ->where(['>', 'expired_at', new Expression('NOW()')])
+                ->asArray()
+        );
+
         // If the resume was found keep going
         if (!is_null($resume)) {
-            // TODO: Match-engine integration here!
-            return $resume;
+            /**
+             * In this step we'll use the Match-engine to handle the comparison
+             * between candidate resume and the offered jobs
+             */
+            $jobList = MatcherAll::match($resume, $jobList);
+
+            return $jobList;
         }
         else {
             // Return all the active jobs without filtering by match engine
-            return static::query(
-                Job::find()
-                    ->where(['<', 'expired_at', new Expression('NOW()')])
-                    ->asArray()
-            );
+            return $jobList;
         }
-
     }
 }
