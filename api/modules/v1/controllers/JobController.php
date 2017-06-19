@@ -73,11 +73,10 @@ class JobController extends ActiveController
         $resume = Resume::find()->where(['user_id' => \Yii::$app->user->id])->one();
 
         // Retrieve the active job list filtered by expired date
-        $jobList = static::query(
-            Job::find()
+        $jobList = Job::find()
                 ->where(['>', 'expired_at', new Expression('NOW()')])
                 ->asArray()
-        );
+                ->all();
 
         /**
          * Here it's necessary to implement wich match strategy
