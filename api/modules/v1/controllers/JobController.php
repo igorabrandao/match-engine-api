@@ -87,7 +87,7 @@ class JobController extends ActiveController
          *
          * For now I'll be using MatchAll
          */
-        $matchInstance = new MatchAll();
+        $matchInstance = new MatchAll(0.18);
 
         // If the resume was found keep going
         if (!is_null($resume)) {
@@ -97,6 +97,7 @@ class JobController extends ActiveController
              */
             $jobList = $matchInstance->match($resume, $jobList);
 
+            // Return the filtered jobList by Match engine
             return $jobList;
         }
         else {

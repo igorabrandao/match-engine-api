@@ -79,8 +79,6 @@ class MatchAll implements Matcher
             // Reset the current item compatibility
             $currentCompatibility = 0;
 
-            echo "<br>===============================================================<br>";
-
             // Run through the properties of each item
             foreach ($currentItem as $listLabel => $listProperty) {
 
@@ -98,10 +96,6 @@ class MatchAll implements Matcher
                     if (is_numeric($listProperty)) {
                         $listProperty = $listProperty + 0;
                     }
-
-                    echo gettype($itemProperty) . ": {[ " . $itemLabel . "] => " .
-                        $itemProperty . ', [' . $listLabel . "] => " . $listProperty .
-                        "} = [weight] => " . $attributeWeight;
 
                     /**
                      * First of all: find out the item type to perform the correct match operation
@@ -137,8 +131,6 @@ class MatchAll implements Matcher
                     else {
                         // TODO: trigger an exception
                     }
-
-                    echo ", [compatibility] => " . $currentCompatibility . "<br>";
                 }
             }
 
@@ -159,10 +151,6 @@ class MatchAll implements Matcher
                 // Add the list item and its compatibility to matches array
                 array_push($matches, $newItem);
             }
-
-            echo "<br>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>";
-            echo " item compatibility: " . $currentCompatibility . "<br>";
-            echo "<br>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>";
         }
 
         // Return the matches array
