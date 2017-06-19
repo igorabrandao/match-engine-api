@@ -70,7 +70,10 @@ class JobController extends ActiveController
     public function actionSearchJob()
     {
         // First of all: retrieve the user resume
-        $resume = Resume::find()->where(['user_id' => \Yii::$app->user->id])->one();
+        $resume = Resume::find()
+                ->where(['user_id' => \Yii::$app->user->id])
+                ->asArray()
+                ->one();
 
         // Retrieve the active job list filtered by expired date
         $jobList = Job::find()
