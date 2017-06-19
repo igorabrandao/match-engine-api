@@ -87,8 +87,8 @@ class MatchAll implements Matcher
                 // Run through the properties of each item
                 foreach ($item as $itemLabel => $itemProperty) {
 
-                    // Defines the atribbute similarity
-                    $attributeWeight = 0;
+                    // Returns a value between 0 and 1 representing the attribute weight
+                    $attributeWeight = StringHelper::string_compare($itemLabel, $listLabel);
 
                     // If the value is a numeric string, converts to a numeric variable
                     if (is_numeric($itemProperty)) {
@@ -99,63 +99,70 @@ class MatchAll implements Matcher
                         $listProperty = $listProperty + 0;
                     }
 
+                    echo gettype($itemProperty) . ": {[ " . $itemLabel . "] => " .
+                        $itemProperty . ', [' . $listLabel . "] => " . $listProperty .
+                        "} = [weight] => " . $attributeWeight;
+
                     /**
                      * First of all: find out the item type to perform the correct match operation
                      */
-
-                    echo gettype($itemProperty) . ": " .
-                        $itemProperty . ' --> ' . $listProperty . '<br>';
-
                     if (is_string($itemProperty)) {
                         /**
                          * String comparation
                          * Compares each item attribute
                          * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
                          */
-
-                        // Returns a value between 0 and 1 representing the attribute weight
-                        $attributeWeight = StringHelper::string_compare($itemLabel, $listLabel);
-
-                        // Receive the attribute similarity and multiply by its weight
                         $currentCompatibility += (MatchComparatorString::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
                     } else if (is_int($itemProperty)) {
                         /**
                          * Integer comparation
                          * Compares each item attribute
                          * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
                          */
-                        $currentCompatibility += MatchComparatorDiscrete::compareAttribute($itemProperty, $listProperty);
+                        $currentCompatibility += (MatchComparatorDiscrete::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
                     } else if (is_float($itemProperty)) {
                         /**
                          * Float comparation
                          * Compares each item attribute
                          * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
                          */
-                        $currentCompatibility += MatchComparatorScalar::compareAttribute($itemProperty, $listProperty);
+                        $currentCompatibility += (MatchComparatorScalar::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
                     } // Non defined type in match engine
                     else {
                         // TODO: trigger an exception
                     }
-                }
 
-                /**
-                 * Sum of attribute similarity between the items is divided by the number of attributes
-                 * It results in a number between 0 and 1 (%)
-                 */
-                $currentCompatibility = $currentCompatibility / $attributesCount;
-
-                // Generate a multidimensional data to append
-                $newItem = array(
-                    'item' => $currentItem,
-                    'compatibility' => $currentCompatibility
-                );
-
-                // Check if the current compatibility surpasses the minimum compatibility
-                if ($currentCompatibility >= $this->getminimumCompatibility()) {
-                    // Add the list item and its compatibility to matches array
-                    array_push($matches, $newItem);
+                    echo ", [compatibility] => " . $currentCompatibility . "<br>";
                 }
             }
+
+            /**
+             * Sum of attribute similarity between the items is divided by the number of attributes
+             * It results in a number between 0 and 1 (%)
+             */
+            $currentCompatibility = $currentCompatibility / $attributesCount;
+
+            // Generate a multidimensional data to append
+            $newItem = array(
+                'item' => $currentItem,
+                'compatibility' => $currentCompatibility
+            );
+
+            // Check if the current compatibility surpasses the minimum compatibility
+            if ($currentCompatibility >= $this->getminimumCompatibility()) {
+                // Add the list item and its compatibility to matches array
+                array_push($matches, $newItem);
+            }
+
+            echo "<br>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>";
+            echo " item compatibility: " . $currentCompatibility . "<br>";
+            echo "<br>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>";
         }
 
         // Return the matches array
