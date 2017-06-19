@@ -2,7 +2,7 @@
 
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\matchEngine\MatcherAll;
+use api\modules\v1\matchEngine\MatchAll;
 use api\modules\v1\models\Job;
 use api\modules\v1\models\Resume;
 use yii\data\ActiveDataProvider;
@@ -79,13 +79,21 @@ class JobController extends ActiveController
                 ->asArray()
         );
 
+        /**
+         * Here it's necessary to implement wich match strategy
+         * will be used
+         *
+         * For now I'll be using MatchAll
+         */
+        $matchInstance = new MatchAll(0.85);
+
         // If the resume was found keep going
         if (!is_null($resume)) {
             /**
              * In this step we'll use the Match-engine to handle the comparison
              * between candidate resume and the offered jobs
              */
-            $jobList = MatcherAll::match($resume, $jobList);
+            $jobList = $matchInstance->match($resume, $jobList);
 
             return $jobList;
         }
