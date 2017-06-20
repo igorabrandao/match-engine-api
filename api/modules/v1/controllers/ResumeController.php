@@ -2,14 +2,19 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\matchEngine\MatchStrategy;
+use api\modules\v1\models\Job;
 use api\modules\v1\models\Resume;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\filters\auth\HttpBearerAuth;
+use yii\rest\ActiveController;
 
 /**
 * Resume Controller API
 */
-class ResumeController extends \yii\rest\ActiveController
+class ResumeController extends ActiveController
 {
     public $modelClass = 'api\modules\v1\models\Resume';
 
@@ -29,6 +34,21 @@ class ResumeController extends \yii\rest\ActiveController
         return $behaviors;
     }
 
+    /**
+     * @param $query
+     * @return ActiveDataProvider
+     */
+    private static function query($query)
+    {
+        return new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false
+        ]);
+    }
+
+    /**
+     * @return array
+     */
     public function actions()
     {
         $actions = parent::actions();
@@ -43,5 +63,83 @@ class ResumeController extends \yii\rest\ActiveController
         };
 
         return $actions;
+    }
+
+    /**
+     * Function to search resumes accordling to companie job
+     * Uses the Match engine
+     *
+     * @return array|object|\yii\db\ActiveRecord[]
+     */
+    public function actionSearchResume()
+    {
+        // Try to get the job ID if it was informed
+        $job_id = Yii::$app->getRequest()->getQueryParam('job_id');
+
+        // Try to get the company ID if it was informed
+        $company_id = Yii::$app->getRequest()->getQueryParam('company_id');
+
+        // Retrieve the jobs accordling to parameter
+        if (!is_null($job_id)) {
+            // Get the specified job by its ID
+            $job = Job::find()
+                ->where(['id' => $job_id])
+                ->asArray()
+                ->all();
+        }
+        // Get all company's jobs
+        else if (!is_null($company_id)) {
+            $job = Job::find()
+                ->select(['job.*'])
+                ->join('INNER JOIN', 'company_has_job', 'company_has_job.job_id = job.id')
+                ->join('INNER JOIN', 'company', 'company_has_job.company_id = company.id')
+                ->andFilterWhere(['company_has_job.company_id' => $company_id])
+                ->asArray();
+        }
+        // Get all jobs
+        else {
+            $job = Job::find()
+                ->asArray()
+                ->all();
+        }
+
+        /**
+         * Retrieve all available resumes
+         *
+         * Note that available resumes mean that candidates that aren't hired yet,
+         * that's why application status must be different from 2
+         */
+        $resumeList = Resume::find()
+            ->select(['resume.*'])
+            ->join('LEFT JOIN', 'job_application', 'resume.user_id = job_application.user_id
+            AND job_application.status != 2')
+            //->andFilterWhere(['<>', 'job_application.status', 2])
+            ->asArray()
+            ->all();
+
+        print_r($job);
+        print_r($resumeList);
+        die();
+
+        /**
+         * Call the MatchStrategy to decide which match implementation will be used
+         */
+        $matchInstance = new MatchStrategy($resumeList,null,0.18);
+
+        // If the job was found keep going
+        if (!is_null($job)) {
+            /**
+             * In this step we'll use the Match-engine to handle the comparison
+             * between offered job(s) and candidates resumes
+             */
+            $resumeList = $matchInstance->match($job, $resumeList);
+
+            // Return the filtered jobList by Match engine
+            return $resumeList;
+        }
+        else {
+            // Return all the active resumes without filtering by match engine
+            return $resumeList;
+        }
     }
 }

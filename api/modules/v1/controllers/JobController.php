@@ -2,7 +2,6 @@
 
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\matchEngine\MatchAll;
 use api\modules\v1\matchEngine\MatchStrategy;
 use api\modules\v1\models\Job;
 use api\modules\v1\models\Resume;
@@ -66,7 +65,10 @@ class JobController extends ActiveController
     }
 
     /**
-     * @return array|null|ActiveDataProvider|\yii\db\ActiveRecord
+     * Function to search jobs accordling to candidate resume
+     * Uses the Match engine
+     *
+     * @return array|object|\yii\db\ActiveRecord[]
      */
     public function actionSearchJob()
     {
