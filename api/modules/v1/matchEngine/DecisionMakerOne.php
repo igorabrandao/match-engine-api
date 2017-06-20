@@ -50,7 +50,7 @@ class DecisionMakerOne implements DecisionMaker
      * After acceptance, the item will be closed.
      *
      * @param item => item or itemList to be matched
-     * @param status => possible matches
+     * @param status => item status
      *
      * @return object
      */

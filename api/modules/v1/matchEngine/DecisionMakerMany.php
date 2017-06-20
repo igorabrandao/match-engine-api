@@ -104,7 +104,7 @@ class DecisionMakerMany implements DecisionMaker
      * It has a limitation related to ACCEPTED itens defined by $maximumMatchesAccepted attribute
      *
      * @param item => item or itemList to be matched
-     * @param status => array with possible matches
+     * @param status => array with itens status
      *
      * @return object array
      */

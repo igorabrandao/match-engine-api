@@ -2,6 +2,7 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\DecisionMakerEngine\DecisionMakerStrategy;
 use api\modules\v1\models\JobApplication;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
@@ -43,5 +44,40 @@ class JobApplicationController extends \yii\rest\ActiveController
         };
 
         return $actions;
+    }
+
+    /**
+     * @param $query
+     * @return ActiveDataProvider
+     */
+    private static function query($query)
+    {
+        return new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return static
+     */
+    public function actionDecideApplication($id)
+    {
+        $jobApplication = JobApplication::findOne($id);
+
+        $status = Yii::app()->request->getQuery('status');
+
+        if(empty($jobApplication)) {
+            throw new NotFoundHttpException('Job Application not found.');
+        }
+
+        /**
+         * Call the MatchStrategy to decide which decision implementation will be used
+         */
+        $decisionInstance = new DecisionMakerStrategy($jobApplication);
+
+        // Define the job application status
+        $decisionInstance->decideMatch($jobApplication, $status);
     }
 }

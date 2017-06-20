@@ -80,6 +80,14 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/job-application',
+                    'extraPatterns' => [
+                        'OPTIONS <whatever:.*>' => 'options',
+                        'POST <id:\d+>?status' => 'decide-application',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/user',
                     'extraPatterns' => [
                         'OPTIONS <whatever:.*>' => 'options',
@@ -94,13 +102,6 @@ return [
                         'OPTIONS <whatever:.*>' => 'options',
                         'POST <id:\d+>/approve' => 'approve',
                         'POST <id:\d+>/reject' => 'reject'
-                    ]
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/gallery',
-                    'extraPatterns' => [
-                        'OPTIONS <whatever:.*>' => 'options',
                     ]
                 ],
                 [

@@ -51,7 +51,7 @@ class DecisionMakerAll implements DecisionMaker
      * There is no limitation related to ACCEPTED itens
      *
      * @param item => item or itemList to be matched
-     * @param status => array with possible matches
+     * @param status => array with itens status
      *
      * @return object array
      */
