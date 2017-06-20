@@ -3,6 +3,7 @@
 namespace api\modules\v1\controllers;
 
 use api\modules\v1\matchEngine\MatchAll;
+use api\modules\v1\matchEngine\MatchStrategy;
 use api\modules\v1\models\Job;
 use api\modules\v1\models\Resume;
 use yii\data\ActiveDataProvider;
@@ -82,12 +83,9 @@ class JobController extends ActiveController
                 ->all();
 
         /**
-         * Here it's necessary to implement which match strategy
-         * will be used
-         *
-         * For now I'll be using MatchAll
+         * Call the MatchStrategy to decide which match implementation will be used
          */
-        $matchInstance = new MatchAll(0.18);
+        $matchInstance = new MatchStrategy($jobList,null,0.18);
 
         // If the resume was found keep going
         if (!is_null($resume)) {
