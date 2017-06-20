@@ -2,14 +2,15 @@
 
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\DecisionMakerEngine\DecisionMakerStrategy;
+use api\modules\v1\matchEngine\DecisionMakerStrategy;
+use api\modules\v1\matchEngine\DecisionMaker;
 use api\modules\v1\models\JobApplication;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 
 /**
-* JobApplication Controller API
-*/
+ * JobApplication Controller API
+ */
 class JobApplicationController extends \yii\rest\ActiveController
 {
     public $modelClass = 'api\modules\v1\models\JobApplication';
@@ -17,7 +18,7 @@ class JobApplicationController extends \yii\rest\ActiveController
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors ()
     {
         $behaviors = parent::behaviors();
 
@@ -30,7 +31,7 @@ class JobApplicationController extends \yii\rest\ActiveController
         return $behaviors;
     }
 
-    public function actions()
+    public function actions ()
     {
         $actions = parent::actions();
 
@@ -50,7 +51,7 @@ class JobApplicationController extends \yii\rest\ActiveController
      * @param $query
      * @return ActiveDataProvider
      */
-    private static function query($query)
+    private static function query ($query)
     {
         return new ActiveDataProvider([
             'query' => $query,
@@ -59,25 +60,102 @@ class JobApplicationController extends \yii\rest\ActiveController
     }
 
     /**
+     * Function to accept job applications
+     * Use the match engine Decision Maker group of classes
+     *
      * @param $id
-     * @return static
+     * @return void
      */
-    public function actionDecideApplication($id)
+    public function actionAcceptApplication ($id)
     {
-        $jobApplication = JobApplication::findOne($id);
+        // Retrieve the job application accordling to parameter
+        if (!is_null($id)) {
+            $jobApplication = JobApplication::find()
+                ->where(['id' => $id])
+                ->asArray()
+                ->all();
+        }
+        // Retrieve all job applications
+        else {
+            $jobApplication = JobApplication::find()
+                ->asArray()
+                ->all();
+        }
 
-        $status = Yii::app()->request->getQuery('status');
-
-        if(empty($jobApplication)) {
+        // Check if some application was found
+        if (empty($jobApplication)) {
             throw new NotFoundHttpException('Job Application not found.');
         }
 
         /**
-         * Call the MatchStrategy to decide which decision implementation will be used
+         * Call the DecisionMakerStrategy to decide which decision implementation will be used
          */
         $decisionInstance = new DecisionMakerStrategy($jobApplication);
 
         // Define the job application status
-        $decisionInstance->decideMatch($jobApplication, $status);
+        $jobApplication = $decisionInstance->decideMatch($jobApplication, DecisionMaker::ACCEPTED);
+
+        // Run through all job applications
+        foreach ($jobApplication as $key => $currentItem) {
+
+            // Get the job application object
+            $currentJobApplication = JobApplication::findOne($jobApplication[$key]['id']);
+
+            // Add the status
+            $currentJobApplication->status = $jobApplication[$key]['status'];
+
+            // Update its status in DB
+            $currentJobApplication->save();
+        }
+    }
+
+    /**
+     * Function to reject job applications
+     * Use the match engine Decision Maker group of classes
+     *
+     * @param $id
+     * @return void
+     */
+    public function actionRejectApplication ($id)
+    {
+        // Retrieve the job application accordling to parameter
+        if (!is_null($id)) {
+            $jobApplication = JobApplication::find()
+                ->where(['id' => $id])
+                ->asArray()
+                ->all();
+        }
+        // Retrieve all job applications
+        else {
+            $jobApplication = JobApplication::find()
+                ->asArray()
+                ->all();
+        }
+
+        // Check if some application was found
+        if (empty($jobApplication)) {
+            throw new NotFoundHttpException('Job Application not found.');
+        }
+
+        /**
+         * Call the DecisionMakerStrategy to decide which decision implementation will be used
+         */
+        $decisionInstance = new DecisionMakerStrategy($jobApplication);
+
+        // Define the job application status
+        $jobApplication = $decisionInstance->decideMatch($jobApplication, DecisionMaker::REJECTED);
+
+        // Run through all job applications
+        foreach ($jobApplication as $key => $currentItem) {
+
+            // Get the job application object
+            $currentJobApplication = JobApplication::findOne($jobApplication[$key]['id']);
+
+            // Add the status
+            $currentJobApplication->status = $jobApplication[$key]['status'];
+
+            // Update its status in DB
+            $currentJobApplication->save();
+        }
     }
 }

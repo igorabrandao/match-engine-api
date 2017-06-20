@@ -6,7 +6,7 @@
  * Time: 05:44
  */
 
-namespace api\modules\v1\DecisionMakerEngine;
+namespace api\modules\v1\matchEngine;
 
 /**
  * DecisionMakerStrategy - context decision maker strategy class

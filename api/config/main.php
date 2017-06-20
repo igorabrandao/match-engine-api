@@ -83,7 +83,8 @@ return [
                     'controller' => 'v1/job-application',
                     'extraPatterns' => [
                         'OPTIONS <whatever:.*>' => 'options',
-                        'POST <id:\d+>?status' => 'decide-application',
+                        'POST <id:\d+>/approve' => 'accept-application',
+                        'POST <id:\d+>/reject' => 'reject-application',
                     ]
                 ],
                 [

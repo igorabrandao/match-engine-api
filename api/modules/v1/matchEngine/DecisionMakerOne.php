@@ -59,12 +59,15 @@ class DecisionMakerOne implements DecisionMaker
         // Decide wich status will be defined
         switch ($status) {
             case -1:
-                $this->setitemStatus($this::REJECTED);
+                $this->setitemStatus($this::STATUS_NOT_DEFINED);
                 break;
             case 0:
                 $this->setitemStatus($this::WAITING_EVALUATION);
                 break;
             case 1:
+                $this->setitemStatus($this::REJECTED);
+                break;
+            case 2:
                 $this->setitemStatus($this::ACCEPTED);
                 break;
             default:
@@ -73,7 +76,7 @@ class DecisionMakerOne implements DecisionMaker
         }
 
         // Apply the status to the item
-        $item['status'] = $this->getitemStatus();
+        $item[0]['status'] = $this->getitemStatus();
 
         // Return the the item with the new attribute
         return $item;
