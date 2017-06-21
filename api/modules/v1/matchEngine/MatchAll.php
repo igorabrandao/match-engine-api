@@ -153,6 +153,12 @@ class MatchAll implements Matcher
             }
         }
 
+        // Sort the matches array by compatibility desc
+        usort($matches, function ($a, $b) {
+            if ($a['compatibility'] == $b['compatibility']) return 0;
+            return $a['compatibility'] < $b['compatibility'] ? 1 : -1;
+        });
+
         // Return the matches array
         return $matches;
     }
