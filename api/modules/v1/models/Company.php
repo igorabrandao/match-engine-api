@@ -56,7 +56,7 @@ class Company extends \yii\db\ActiveRecord
             [['address_number'], 'string', 'max' => 64],
             [['logo_id'], 'string', 'max' => 13],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['logo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Logo::className(), 'targetAttribute' => ['logo_id' => 'id']],
+            [['logo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Upload::className(), 'targetAttribute' => ['logo_id' => 'id']],
         ];
     }
 
