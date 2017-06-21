@@ -3,11 +3,12 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
+use api\modules\v1\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 use yii\web\UnauthorizedHttpException;
-use api\modules\v1\models\User;
+use yii\web\ForbiddenHttpException;
 
 /**
  * User Controller API

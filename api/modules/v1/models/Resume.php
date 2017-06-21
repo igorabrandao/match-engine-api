@@ -21,7 +21,6 @@ use Yii;
  * @property string $street
  * @property string $district
  * @property string $address_number
- * @property string $logo_id
  * @property integer $city_id
  * @property string $facebook
  * @property string $twitter
@@ -30,7 +29,6 @@ use Yii;
  * @property string $linkedin
  * @property string $site
  *
- * @property Logo $photo
  * @property User $user
  * @property ResumeHasTag[] $resumeHasTags
  */
@@ -55,10 +53,10 @@ class Resume extends \yii\db\ActiveRecord
             [['resume', 'education', 'work_experience', 'language'], 'string'],
             [['rate'], 'number'],
             [['professional_title', 'video', 'street', 'district', 'facebook', 'twitter', 'google_plus', 'instagram', 'linkedin', 'site'], 'string', 'max' => 255],
-            [['photo_id', 'logo_id'], 'string', 'max' => 13],
+            [['photo_id'], 'string', 'max' => 13],
             [['cep'], 'string', 'max' => 16],
             [['address_number'], 'string', 'max' => 64],
-            [['photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Logo::className(), 'targetAttribute' => ['photo_id' => 'id']],
+            [['photo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Upload::className(), 'targetAttribute' => ['photo_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -83,7 +81,6 @@ class Resume extends \yii\db\ActiveRecord
             'street' => 'Street',
             'district' => 'District',
             'address_number' => 'Address Number',
-            'logo_id' => 'Logo ID',
             'city_id' => 'City ID',
             'facebook' => 'Facebook',
             'twitter' => 'Twitter',
@@ -99,7 +96,7 @@ class Resume extends \yii\db\ActiveRecord
      */
     public function getPhoto()
     {
-        return $this->hasOne(Logo::className(), ['id' => 'photo_id']);
+        return $this->hasOne(Upload::className(), ['id' => 'photo_id']);
     }
 
     /**
