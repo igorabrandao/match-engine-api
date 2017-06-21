@@ -2,8 +2,8 @@
 
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\matchEngine\DecisionMakerStrategy;
 use api\modules\v1\matchEngine\DecisionMaker;
+use api\modules\v1\matchEngine\DecisionMakerStrategy;
 use api\modules\v1\models\JobApplication;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
@@ -156,6 +156,43 @@ class JobApplicationController extends \yii\rest\ActiveController
 
             // Update its status in DB
             $currentJobApplication->save();
+        }
+    }
+
+    /**
+     * Function to check the job application status
+     *
+     * @param $id
+     * @return void
+     */
+    public function actionCheckStatusApplication ($id)
+    {
+        // Retrieve the job application accordling to parameter
+        if (!is_null($id)) {
+            $jobApplication = JobApplication::find()->where(['id' => $id])->one();
+        }
+
+        // Check if some application was found
+        if (empty($jobApplication)) {
+            throw new NotFoundHttpException('Job Application not found.');
+        }
+
+        switch ($jobApplication->status) {
+            case DecisionMaker::STATUS_NOT_DEFINED:
+                return "Houve um problema com a sua aplicação, por favor tente novamente.";
+                break;
+            case DecisionMaker::WAITING_EVALUATION:
+                return "A empresa ainda não avaliou a sua aplicação, estamos torcendo por você!";
+                break;
+            case DecisionMaker::REJECTED:
+                return "Infelizmente a empresa não aceitou sua aplicação, mas não desanime. Temos várias ofertas de emprego disponíveis em nosso site.";
+                break;
+            case DecisionMaker::ACCEPTED:
+                return "Parabéns! A empresa aceitou a sua aplicação, em breve um representante da empresa entrará em contato.";
+                break;
+            default:
+                return "Houve um problema com a sua aplicação, por favor tente novamente.";
+                break; // Needs to be handled
         }
     }
 }
