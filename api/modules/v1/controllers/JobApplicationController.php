@@ -7,11 +7,14 @@ use api\modules\v1\matchEngine\DecisionMakerStrategy;
 use api\modules\v1\models\JobApplication;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
+use Yii;
+use yii\db\Expression;
+use yii\rest\ActiveController;
 
 /**
  * JobApplication Controller API
  */
-class JobApplicationController extends \yii\rest\ActiveController
+class JobApplicationController extends ActiveController
 {
     public $modelClass = 'api\modules\v1\models\JobApplication';
 
@@ -74,8 +77,7 @@ class JobApplicationController extends \yii\rest\ActiveController
                 ->where(['id' => $id])
                 ->asArray()
                 ->all();
-        }
-        // Retrieve all job applications
+        } // Retrieve all job applications
         else {
             $jobApplication = JobApplication::find()
                 ->asArray()
@@ -124,8 +126,7 @@ class JobApplicationController extends \yii\rest\ActiveController
                 ->where(['id' => $id])
                 ->asArray()
                 ->all();
-        }
-        // Retrieve all job applications
+        } // Retrieve all job applications
         else {
             $jobApplication = JobApplication::find()
                 ->asArray()
@@ -193,6 +194,39 @@ class JobApplicationController extends \yii\rest\ActiveController
             default:
                 return "Houve um problema com a sua aplicação, por favor tente novamente.";
                 break; // Needs to be handled
+        }
+    }
+
+    /**
+     * Function to search resumes accordling to companie job
+     * Uses the Match engine
+     *
+     * @return array|object|\yii\db\ActiveRecord[]
+     */
+    public function actionSearchApplication ()
+    {
+        // Try to get the job ID if it was informed
+        $job_id = Yii::$app->getRequest()->getQueryParam('job_id');
+
+        // Retrieve the job application accordling to parameter
+        if (!is_null($job_id)) {
+            $jobApplication = JobApplication::find()
+                ->select(['job_application.*', 'resume.*'])
+                ->join('INNER JOIN', 'resume', 'resume.user_id = job_application.user_id')
+                ->where(['job_application.job_id' => $job_id])
+                ->asArray()
+                ->all();
+
+            // Check if some application was found
+            if (empty($jobApplication)) {
+                return "Nenhuma candidatura encontrada";
+            }
+            else {
+                return $jobApplication;
+            }
+        }
+        else {
+            return "A oportunidade de emprego deve ser informada";
         }
     }
 }

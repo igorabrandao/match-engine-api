@@ -85,7 +85,8 @@ return [
                         'OPTIONS <whatever:.*>' => 'options',
                         'POST <id:\d+>/approve' => 'accept-application',
                         'POST <id:\d+>/reject' => 'reject-application',
-                        'GET <id:\d+>/check-status' => 'check-status-application'
+                        'GET <id:\d+>/check-status' => 'check-status-application',
+                        'GET search-application' => 'search-application'
                     ]
                 ],
                 [
