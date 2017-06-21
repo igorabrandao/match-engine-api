@@ -211,7 +211,7 @@ class JobApplicationController extends ActiveController
         // Retrieve the job application accordling to parameter
         if (!is_null($job_id)) {
             $jobApplication = JobApplication::find()
-                ->select(['job_application.*', 'resume.*'])
+                ->select(['id_application' => 'job_application.id', 'job_application.*', 'id_resume' => 'resume.id', 'resume.*'])
                 ->join('INNER JOIN', 'resume', 'resume.user_id = job_application.user_id')
                 ->where(['job_application.job_id' => $job_id])
                 ->asArray()
