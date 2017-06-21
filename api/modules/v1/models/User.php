@@ -96,7 +96,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['is_active', 'name', 'email'], 'required'],
             [['is_active'], 'integer'],
             [['expiration_date_reset_token', 'updated_at', 'created_at'], 'safe'],
-            [['name', 'email', 'phone', 'access_token', 'password_reset_token', 'encrypted_password'], 'string', 'max' => 255],
+            [['name', 'surname', 'email', 'phone', 'access_token', 'password_reset_token', 'encrypted_password'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'filter', 'filter' => 'strtolower'],
