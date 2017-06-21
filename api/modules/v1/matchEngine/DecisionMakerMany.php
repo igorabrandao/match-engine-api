@@ -104,7 +104,7 @@ class DecisionMakerMany implements DecisionMaker
      * It has a limitation related to ACCEPTED itens defined by $maximumMatchesAccepted attribute
      *
      * @param item => item or itemList to be matched
-     * @param status => array with possible matches
+     * @param status => array with itens status
      *
      * @return object array
      */
@@ -115,12 +115,15 @@ class DecisionMakerMany implements DecisionMaker
             // Decide wich status will be defined
             switch ($status[$key]) {
                 case -1:
-                    $this->setitemStatus($this::REJECTED);
+                    $this->setitemStatus($this::STATUS_NOT_DEFINED);
                     break;
                 case 0:
                     $this->setitemStatus($this::WAITING_EVALUATION);
                     break;
                 case 1:
+                    $this->setitemStatus($this::REJECTED);
+                    break;
+                case 2:
 
                     /**
                      * Rule: the max number of accepted matches should be respected

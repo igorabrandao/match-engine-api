@@ -72,8 +72,30 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/user-per-company',
-                    'only' => ['create', 'options']
+                    'controller' => 'v1/job',
+                    'extraPatterns' => [
+                        'OPTIONS <whatever:.*>' => 'options',
+                        'GET search-job' => 'search-job'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/job-application',
+                    'extraPatterns' => [
+                        'OPTIONS <whatever:.*>' => 'options',
+                        'POST <id:\d+>/approve' => 'accept-application',
+                        'POST <id:\d+>/reject' => 'reject-application',
+                        'GET <id:\d+>/check-status' => 'check-status-application',
+                        'GET search-application' => 'search-application'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/resume',
+                    'extraPatterns' => [
+                        'OPTIONS <whatever:.*>' => 'options',
+                        'GET search-resume' => 'search-resume'
+                    ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
@@ -82,22 +104,6 @@ return [
                         'OPTIONS <whatever:.*>' => 'options',
                         'POST login' => 'login',
                         'POST find-by-email' => 'find-by-email'
-                    ]
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/promotion',
-                    'extraPatterns' => [
-                        'OPTIONS <whatever:.*>' => 'options',
-                        'POST <id:\d+>/approve' => 'approve',
-                        'POST <id:\d+>/reject' => 'reject'
-                    ]
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'v1/gallery',
-                    'extraPatterns' => [
-                        'OPTIONS <whatever:.*>' => 'options',
                     ]
                 ],
                 [

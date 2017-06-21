@@ -2,6 +2,8 @@
 
 namespace api\modules\v1\matchEngine;
 
+use api\helpers\StringHelper;
+
 /**
  * MatcherAll - matcher for all items more than N% compatible
  *
@@ -9,7 +11,7 @@ namespace api\modules\v1\matchEngine;
  *
  */
 
-class MatcherAll implements Matcher
+class MatchAll implements Matcher
 {
     /**
      * Defines the minimum item compatibility
@@ -31,7 +33,7 @@ class MatcherAll implements Matcher
     /**
      * @param int $minimumCompatibility
      */
-    public function setminimumCompatibility ($minimumCompatibility = null)
+    public function setminimumCompatibility ($minimumCompatibility)
     {
         // Check if minimum compatibility parameter was informed
         if (!is_null($minimumCompatibility)) {
@@ -44,10 +46,12 @@ class MatcherAll implements Matcher
      *
      * @param $minimumCompatibility_
      */
-    public function __construct ($minimumCompatibility_)
+    public function __construct ($minimumCompatibility_ = null)
     {
-        // Set how many matches the operation'll return
-        $this->setminimumCompatibility($minimumCompatibility_);
+        // Check if minimum compatibility parameter was informed
+        if (!is_null($minimumCompatibility_)) {
+            $this->minimumCompatibility = $minimumCompatibility_;
+        }
     }
 
     /**
@@ -71,42 +75,63 @@ class MatcherAll implements Matcher
 
         // Run through array items
         foreach ($itemList as $key => $currentItem) {
+
             // Reset the current item compatibility
             $currentCompatibility = 0;
 
-            /**
-             * First of all: find out the item type to perform the correct match operation
-             */
-            if (is_string($currentItem)) {
-                /**
-                 * String comparation
-                 * Compares each item attribute
-                 * Compatibility receives the sum of attribute similarity
-                 */
-                for ($index = 0; $index < $attributesCount; $index++) {
-                    $currentCompatibility += MatchComparatorString::compareAttribute($item[$index], $currentItem);
+            // Run through the properties of each item
+            foreach ($currentItem as $listLabel => $listProperty) {
+
+                // Run through the properties of each item
+                foreach ($item as $itemLabel => $itemProperty) {
+
+                    // Returns a value between 0 and 1 representing the attribute weight
+                    $attributeWeight = StringHelper::string_compare($itemLabel, $listLabel);
+
+                    // If the value is a numeric string, converts to a numeric variable
+                    if (is_numeric($itemProperty)) {
+                        $itemProperty = $itemProperty + 0;
+                    }
+
+                    if (is_numeric($listProperty)) {
+                        $listProperty = $listProperty + 0;
+                    }
+
+                    /**
+                     * First of all: find out the item type to perform the correct match operation
+                     */
+                    if (is_string($itemProperty)) {
+                        /**
+                         * String comparation
+                         * Compares each item attribute
+                         * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
+                         */
+                        $currentCompatibility += (MatchComparatorString::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
+                    } else if (is_int($itemProperty)) {
+                        /**
+                         * Integer comparation
+                         * Compares each item attribute
+                         * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
+                         */
+                        $currentCompatibility += (MatchComparatorDiscrete::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
+                    } else if (is_float($itemProperty)) {
+                        /**
+                         * Float comparation
+                         * Compares each item attribute
+                         * Compatibility receives the sum of attribute similarity
+                         *
+                         * Receive the attribute similarity and multiply by its weight
+                         */
+                        $currentCompatibility += (MatchComparatorScalar::compareAttribute($itemProperty, $listProperty) * $attributeWeight);
+                    } // Non defined type in match engine
+                    else {
+                        // TODO: trigger an exception
+                    }
                 }
-            } else if (is_int($currentItem)) {
-                /**
-                 * Integer comparation
-                 * Compares each item attribute
-                 * Compatibility receives the sum of attribute similarity
-                 */
-                for ($index = 0; $index < $attributesCount; $index++) {
-                    $currentCompatibility += MatchComparatorDiscrete::compareAttribute($item[$index], $currentItem);
-                }
-            } else if (is_float($currentItem)) {
-                /**
-                 * Float comparation
-                 * Compares each item attribute
-                 * Compatibility receives the sum of attribute similarity
-                 */
-                for ($index = 0; $index < $attributesCount; $index++) {
-                    $currentCompatibility += MatchComparatorScalar::compareAttribute($item[$index], $currentItem);
-                }
-            } // Non defined type in match engine
-            else {
-                // TODO: trigger an exception
             }
 
             /**
@@ -127,6 +152,12 @@ class MatcherAll implements Matcher
                 array_push($matches, $newItem);
             }
         }
+
+        // Sort the matches array by compatibility desc
+        usort($matches, function ($a, $b) {
+            if ($a['compatibility'] == $b['compatibility']) return 0;
+            return $a['compatibility'] < $b['compatibility'] ? 1 : -1;
+        });
 
         // Return the matches array
         return $matches;

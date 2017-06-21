@@ -33,6 +33,11 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     /**
+     * @var string Unencrypted password
+     */
+    public $password;
+
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)
@@ -73,11 +78,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @var string Unencrypted password
-     */
-    public $password;
-
-    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -91,11 +91,16 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['is_admin', 'is_active', 'name', 'surname', 'email', 'encrypted_password'], 'required'],
-            [['is_admin', 'is_active'], 'integer'],
-            [['expiration_date_reset_token', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'email'], 'required', 'on' => ['create', 'update']],
+            [['password'], 'required', 'on' => ['create']],
+            [['is_active', 'name', 'email'], 'required'],
+            [['is_active'], 'integer'],
+            [['expiration_date_reset_token', 'updated_at', 'created_at'], 'safe'],
             [['name', 'surname', 'email', 'phone', 'access_token', 'password_reset_token', 'encrypted_password'], 'string', 'max' => 255],
             [['email'], 'unique'],
+            [['email'], 'email'],
+            [['email'], 'filter', 'filter' => 'strtolower'],
+            [['password_reset_token'], 'unique'],
         ];
     }
 
@@ -135,6 +140,7 @@ class User extends ActiveRecord implements IdentityInterface
             'phone' => 'Phone',
             'access_token' => 'Access Token',
             'password_reset_token' => 'Password Reset Token',
+            'password' => 'Password',
             'encrypted_password' => 'Encrypted Password',
             'expiration_date_reset_token' => 'Expiration Date Reset Token',
             'created_at' => 'Created At',

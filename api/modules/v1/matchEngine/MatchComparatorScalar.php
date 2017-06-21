@@ -28,6 +28,6 @@ class MatchComparatorScalar implements MatchComparator
         $compatibility = ($difference / $attrA);
         
         // Returns the compatibility between the attributes
-        return $compatibility;
+        return (1 - $compatibility);
     }
 }

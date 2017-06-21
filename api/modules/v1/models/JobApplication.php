@@ -12,6 +12,7 @@ use Yii;
  * @property integer $user_id
  * @property string $message
  * @property integer $is_active
+ * @property integer $status
  * @property string $created_at
  * @property string $updated_at
  *
@@ -34,7 +35,7 @@ class JobApplication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['job_id', 'user_id', 'is_active'], 'integer'],
+            [['job_id', 'user_id', 'is_active', 'status'], 'integer'],
             [['message', 'is_active'], 'required'],
             [['message'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -54,6 +55,7 @@ class JobApplication extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'message' => 'Message',
             'is_active' => 'Is Active',
+            'status' => 'Job application status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

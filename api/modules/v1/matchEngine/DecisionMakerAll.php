@@ -50,8 +50,8 @@ class DecisionMakerAll implements DecisionMaker
      *
      * There is no limitation related to ACCEPTED itens
      *
-     * @param item => item or itemList to be matched
-     * @param status => array with possible matches
+     * @param item => item or itemList to be validated
+     * @param status => array with itens status
      *
      * @return object array
      */
@@ -59,15 +59,19 @@ class DecisionMakerAll implements DecisionMaker
     {
         // Run through array items
         foreach ($item as $key => $currentItem) {
+
             // Decide wich status will be defined
-            switch ($status[$key]) {
+            switch ($status) {
                 case -1:
-                    $this->setitemStatus($this::REJECTED);
+                    $this->setitemStatus($this::STATUS_NOT_DEFINED);
                     break;
                 case 0:
                     $this->setitemStatus($this::WAITING_EVALUATION);
                     break;
                 case 1:
+                    $this->setitemStatus($this::REJECTED);
+                    break;
+                case 2:
                     $this->setitemStatus($this::ACCEPTED);
                     break;
                 default:
@@ -76,7 +80,7 @@ class DecisionMakerAll implements DecisionMaker
             }
 
             // Apply the status to the item
-            $currentItem['status'] = $this->getitemStatus();
+            $item[$key]['status'] = $this->getitemStatus();
         }
 
         // Return the the item with the new attribute
