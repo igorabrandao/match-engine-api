@@ -79,13 +79,16 @@ class ResumeController extends ActiveController
         // Try to get the company ID if it was informed
         $company_id = Yii::$app->getRequest()->getQueryParam('company_id');
 
+        // Get the max number of resumes
+        $resume_number = Yii::$app->getRequest()->getQueryParam('resume_number');
+
         // Retrieve the jobs accordling to parameter
         if (!is_null($job_id)) {
             // Get the specified job by its ID
             $job = Job::find()
                 ->where(['id' => $job_id])
                 ->asArray()
-                ->all();
+                ->one();
         }
         // Get all company's jobs
         else if (!is_null($company_id)) {
@@ -110,21 +113,24 @@ class ResumeController extends ActiveController
          * that's why application status must be different from 2
          */
         $resumeList = Resume::find()
-            ->select(['resume.*'])
-            ->join('LEFT JOIN', 'job_application', 'resume.user_id = job_application.user_id
-            AND job_application.status != 2')
-            //->andFilterWhere(['<>', 'job_application.status', 2])
+            ->select(['resume.*', 'job_application.status'])
+            ->join('LEFT JOIN', 'job_application', 'resume.user_id = job_application.user_id')
+            ->where(['job_application.status' => null])
+            ->orFilterWhere(['<>', 'job_application.status', 2])
             ->asArray()
             ->all();
-
-        print_r($job);
-        print_r($resumeList);
-        die();
 
         /**
          * Call the MatchStrategy to decide which match implementation will be used
          */
-        $matchInstance = new MatchStrategy($resumeList,null,0.18);
+
+        // Check the number of resumes was informed
+        if (!is_null($resume_number)) {
+            $matchInstance = new MatchStrategy($resumeList,$resume_number);
+        }
+        else {
+            $matchInstance = new MatchStrategy($resumeList,null,0.5);
+        }
 
         // If the job was found keep going
         if (!is_null($job)) {
